@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,8 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboard';
+    public const ADMIN_HOME = '/admin/categories';
+    public const AGENT_HOME = '/agent/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -44,5 +47,21 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+    }
+
+    /**
+     * Get the home route for the authenticated user.
+     */
+    public static function getHomeRoute(): string
+    {
+        if (Auth::check()) {
+            if (Auth::user()->role === 'admin') {
+                return static::ADMIN_HOME;
+            }
+            if (Auth::user()->role === 'agent') {
+                return static::AGENT_HOME;
+            }
+        }
+        return static::HOME;
     }
 }
