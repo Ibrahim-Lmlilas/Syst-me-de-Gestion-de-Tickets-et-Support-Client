@@ -31,9 +31,13 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-})->name('admin.dashboard');
+
+    Route::get('/admin/categories', [App\Http\Controllers\AdminControllers::class, 'categoriesIndex'])->name('admin.categories.index');
+    Route::get('/admin/categories/create', [App\Http\Controllers\AdminControllers::class, 'categoriesCreate'])->name('admin.categories.create');
+    Route::post('/admin/categories', [App\Http\Controllers\AdminControllers::class, 'categoriesStore'])->name('admin.categories.store');
+    Route::get('/admin/categories/{category}/edit', [App\Http\Controllers\AdminControllers::class, 'categoriesEdit'])->name('admin.categories.edit');
+    Route::put('/admin/categories/{category}', [App\Http\Controllers\AdminControllers::class, 'categoriesUpdate'])->name('admin.categories.update');
+    Route::delete('/admin/categories/{category}', [App\Http\Controllers\AdminControllers::class, 'categoriesDestroy'])->name('admin.categories.destroy');
 });
 
 
