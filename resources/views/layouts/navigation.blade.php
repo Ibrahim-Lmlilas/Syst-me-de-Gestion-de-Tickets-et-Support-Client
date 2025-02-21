@@ -17,9 +17,13 @@
                             {{ __('Categories') }}
                         </x-nav-link>
                     @endif
+                    @if(Auth::user()->role === 'user')
+                        <x-nav-link :href="route('user.tickets.index')" :active="request()->routeIs('user.tickets.*')">
+                            {{ __('My Tickets') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -72,6 +76,11 @@
             @if(Auth::user()->role === 'admin')
                 <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
                     {{ __('Categories') }}
+                </x-responsive-nav-link>
+            @endif
+             @if(Auth::user()->role === 'user')
+                <x-responsive-nav-link :href="route('user.tickets.index')" :active="request()->routeIs('user.tickets.*')">
+                    {{ __('My Tickets') }}
                 </x-responsive-nav-link>
             @endif
         </div>
