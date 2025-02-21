@@ -17,6 +17,13 @@ class Ticket extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'categorie_id');
     }
+
+    public function agent()
+    {
+        return $this->belongsTo(User::class, 'agent_id');
+    }
+
+    protected $fillable = ['title', 'description', 'status', 'user_id', 'categorie_id', 'agent_id'];
 }
